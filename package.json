@@ -1,0 +1,19 @@
+{
+  "name": "agilesofttest",
+  "version": "1.0.0",
+  "description": "agilsoft todo app test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gladimir777/todoapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gladimir777/todoapp/issues"
+  },
+  "homepage": "https://github.com/gladimir777/todoapp#readme"
+}
