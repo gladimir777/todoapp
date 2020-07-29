@@ -68,7 +68,10 @@ const Login = ({ login, auth, isAuthenticated }) => {
                 </label>
               </div>
 
-              <div className="form-group text-center">
+              <div
+                className="form-group text-center"
+                disabled={auth.loading ? true : false}
+              >
                 <button type="submit" className="btn btn-primary mt-3 mx-auto">
                   {auth.loading && (
                     <div

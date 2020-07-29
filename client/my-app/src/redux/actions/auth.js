@@ -45,11 +45,7 @@ export const login = (userData) => async (dispatch) => {
     dispatch({ type: LOGIN_SUCCES, payload: res.data });
     dispatch(loadUser());
   } catch (error) {
-    const errors = error.response.data.errors;
-    if (errors) {
-      //  errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
-    }
-
+    console.log(error);
     dispatch({
       type: LOGIN_FAIL,
     });

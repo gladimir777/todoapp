@@ -1,17 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NavBar = ({ logout, userData }) => {
   return (
     <>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a href="#/" class="navbar-brand  mr-auto mt-2 mt-lg-0">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <Link to="" className="navbar-brand  mr-auto mt-2 mt-lg-0">
           TodoApp
-        </a>
-        <ul class="navbar-nav right">
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
+        </Link>
+        <ul className="navbar-nav right">
+          <li className="nav-item dropdown">
+            <Link
+              className="nav-link dropdown-toggle"
+              to=""
               id="navbarDropdownMenuLink"
               role="button"
               data-toggle="dropdown"
@@ -19,11 +20,14 @@ const NavBar = ({ logout, userData }) => {
               aria-expanded="false"
             >
               {userData ? userData.user_name : ''}
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#" onClick={logout}>
+            </Link>
+            <div
+              className="dropdown-menu"
+              aria-labelledby="navbarDropdownMenuLink"
+            >
+              <Link className="dropdown-item" to="" onClick={logout}>
                 Log out
-              </a>
+              </Link>
             </div>
           </li>
         </ul>

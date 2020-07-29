@@ -1,25 +1,20 @@
 import React from 'react';
+import TaskRow from './TaskRow';
 
-const Task = ({ userData }) => {
-  const tableRow = userData
-    ? userData.taks.map((item, index) => (
-        <tr key={item._id}>
-          <th scope="row">{index + 1}</th>
-          <td>{item.name}</td>
-          <td>{item.description}</td>
-          <td>{!item.state ? 'To do' : 'Done'}</td>
-        </tr>
-      ))
-    : null;
+const Task = ({ task }) => {
+  const tableRow = task.map((item, index) => (
+    <TaskRow key={item._id} item={item} index={index} />
+  ));
   return (
     <>
-      <table class="table">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
             <th scope="col">State</th>
+            <th scope="col">Done</th>
           </tr>
         </thead>
         <tbody>{tableRow}</tbody>

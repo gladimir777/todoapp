@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { addTask } from '../../redux/actions/task';
 
-const AddForm = ({ addTask }) => {
+const AddForm = ({ addTask, loading }) => {
   const [task, setTask] = useState({ name: '', description: '' });
 
   const handleChange = (e) => {
@@ -11,17 +11,17 @@ const AddForm = ({ addTask }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask(task);
+    addTask(task).then((e) => setTask({ name: '', description: '' }));
   };
 
   return (
     <>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Name</label>
+        <div className="form-group">
+          <label htmlFor="exampleFormControlInput1">Name</label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="exampleFormControlInput1"
             name="name"
             value={task.name}
@@ -30,10 +30,10 @@ const AddForm = ({ addTask }) => {
           />
         </div>
 
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Description</label>
+        <div className="form-group">
+          <label htmlFor="exampleFormControlTextarea1">Description</label>
           <textarea
-            class="form-control"
+            className="form-control"
             id="exampleFormControlTextarea1"
             rows="3"
             name="description"
@@ -42,7 +42,17 @@ const AddForm = ({ addTask }) => {
             placeholder="A description of what need to be done"
           ></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={loading ? true : false}
+        >
+          {loading && (
+            <div
+              className="spinner-border text-dark float-right text-light"
+              role="status"
+            ></div>
+          )}{' '}
           Add todo
         </button>
       </form>
@@ -50,6 +60,8 @@ const AddForm = ({ addTask }) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  loading: state.auth.taskLoading,
+});
 
 export default connect(mapStateToProps, { addTask })(AddForm);

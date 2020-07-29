@@ -14,6 +14,7 @@ const initialState = {
   token: localStorage.getItem('authToken'),
   loading: false,
   taskLoading: false,
+  task: [],
   user: null,
   isAuthenticated: null,
 };
@@ -23,9 +24,11 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case USER_LOADED:
+      const loadedTask = [...payload.taks];
       return {
         ...state,
         loading: false,
+        task: loadedTask,
         user: payload,
         isAuthenticated: true,
       };
@@ -65,6 +68,7 @@ export default function (state = initialState, action) {
     case TASK_SUCCESS:
       return {
         ...state,
+        task: [...state.task, payload.task],
         taskLoading: false,
       };
 
@@ -73,6 +77,7 @@ export default function (state = initialState, action) {
         ...state,
         taskLoading: false,
       };
+
     default:
       return state;
   }
