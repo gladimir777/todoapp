@@ -26,6 +26,7 @@ export class TaskService {
   }
   // post a single task
   async addTask(createTaskDTO: CreateTaskDTO, userID: string): Promise<ITask> {
+    createTaskDTO.state = false;
     const user = await this.userModel.findById(userID);
 
     const newTask = await this.taskModel(createTaskDTO);

@@ -41,7 +41,7 @@ export const addTask = (task) => async (dispatch) => {
   const body = task;
   console.log('task action', body);
   try {
-    const res = await axios.post('/user/task/create', body, config);
+    const res = await axios.post('/task/create', body, config);
     console.log('response task', res.data);
     dispatch({ type: TASK_SUCCESS, payload: res.data });
     // dispatch(loadUser());

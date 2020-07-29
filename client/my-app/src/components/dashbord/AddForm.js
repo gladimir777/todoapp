@@ -11,6 +11,7 @@ const AddForm = ({ addTask }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    addTask(task);
   };
 
   return (
