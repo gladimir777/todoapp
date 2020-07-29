@@ -36,9 +36,11 @@ export class UserService {
 
   // post a single user
   async addUser(createUserDTO: CreateUserDTO): Promise<IUser> {
+    // @todo the password need to be crypted
     const newUser = await this.userModel(createUserDTO);
     return newUser.save();
   }
+
   // Edit user details
   async updateUser(userID, createUserDTO: CreateUserDTO): Promise<IUser> {
     const updatedUser = await this.userModel.findByIdAndUpdate(

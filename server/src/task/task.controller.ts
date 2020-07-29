@@ -20,7 +20,7 @@ export class TaskController {
   constructor(private taskService: TaskService) {}
 
   // add a task
-  @Post('/create/:userID')
+  @Post('/create/')
   async addTask(
     @Res()
     res,
