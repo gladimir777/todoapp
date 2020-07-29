@@ -10,24 +10,29 @@ import {
   NotFoundException,
   Delete,
   Param,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 
 import { TaskService } from '../task/task.service';
 import { CreateTaskDTO } from 'src/dto/task.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
   // add a task
-  @Post('/create/')
+  @UseGuards(JwtAuthGuard)
+  @Post('/create')
   async addTask(
     @Res()
     res,
     @Body() createTaskDTO: CreateTaskDTO,
-    @Param('userID') userID: string,
+    @Request() req,
   ) {
-    const task = await this.taskService.addTask(createTaskDTO, userID);
+    console.log('task', req.user);
+    const task = await this.taskService.addTask(createTaskDTO, req.user._id);
     return res.status(HttpStatus.OK).json({
       message: 'Task has been created successfully',
       task,
