@@ -5,11 +5,15 @@ import {
   LOGIN_FAIL,
   LOG_OUT,
   LOGIN_INIT,
+  TASK_INIT,
+  TASK_SUCCESS,
+  TASK_FAIL,
 } from '../actions/type';
 
 const initialState = {
   token: localStorage.getItem('authToken'),
   loading: false,
+  taskLoading: false,
   user: null,
   isAuthenticated: null,
 };
@@ -52,6 +56,23 @@ export default function (state = initialState, action) {
         isAuthenticated: false,
       };
 
+    case TASK_INIT:
+      return {
+        ...state,
+        taskLoading: true,
+      };
+
+    case TASK_SUCCESS:
+      return {
+        ...state,
+        taskLoading: false,
+      };
+
+    case TASK_FAIL:
+      return {
+        ...state,
+        taskLoading: false,
+      };
     default:
       return state;
   }

@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { addTask } from '../../redux/actions/task';
 
-const AddForm = () => {
+const AddForm = ({ addTask }) => {
   const [task, setTask] = useState({ name: '', description: '' });
 
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
-      <form>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <div class="form-group">
           <label for="exampleFormControlInput1">Name</label>
           <input
@@ -43,4 +49,6 @@ const AddForm = () => {
   );
 };
 
-export default AddForm;
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, { addTask })(AddForm);
