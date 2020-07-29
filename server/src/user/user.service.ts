@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
+import * as jwt from 'jsonwebtoken';
 import { IUser } from '../interfaces/user.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDTO } from '../dto/user.dto';
+import { jwtConstants } from '../auth/constants';
 
 @Injectable()
 export class UserService {
@@ -27,7 +29,10 @@ export class UserService {
   // Login
   async getUser(userDTO: any): Promise<IUser> {
     const user = await this.userModel
-      .findOne({ user_name: userDTO.user_name, password: userDTO.password })
+      .findOne({
+        user_name: userDTO.user_name,
+        password: userDTO.password,
+      })
       .select('-password')
       .populate('taks')
       .exec();
@@ -35,10 +40,29 @@ export class UserService {
   }
 
   // post a single user
-  async addUser(createUserDTO: CreateUserDTO): Promise<IUser> {
+  async addUser(createUserDTO: CreateUserDTO): Promise<any> {
     // @todo the password need to be crypted
     const newUser = await this.userModel(createUserDTO);
-    return newUser.save();
+    let savedUser = await newUser.save();
+    const access_token = this.createToken(savedUser);
+    return access_token;
+  }
+
+  createToken(user) {
+    const expiresIn = '1d';
+
+    const access_token = jwt.sign(
+      {
+        _id: user._id,
+        user_name: user.user_name,
+      },
+      jwtConstants.secret,
+      { expiresIn },
+    );
+    return {
+      user,
+      access_token,
+    };
   }
 
   // Edit user details

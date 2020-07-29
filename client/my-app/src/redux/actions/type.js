@@ -9,3 +9,12 @@ export const LOG_OUT = 'LOG_OUT';
 export const TASK_INIT = 'TASK_INIT';
 export const TASK_SUCCESS = 'TASK_SUCCESS';
 export const TASK_FAIL = 'TASK_FAIL';
+
+//Register
+export const REGISTER_INIT = 'REGISTER_INIT';
+export const RESGISTER_SUCCESS = 'RESGISTER_SUCCESS';
+export const REGISTER_FAIL = 'REGISTER_FAIL';
+
+export const TASK_UPDATE_INIT = 'TASK_UPDATE_INIT';
+export const TASK_UPDATE_SUCCESS = 'TASK_UPDATE_SUCCESS';
+export const TASK_UPDATE_FAIL = 'TASK_UPDATE_FAIL';

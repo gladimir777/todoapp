@@ -2,13 +2,15 @@ import axios from 'axios';
 import {
   USER_LOADED,
   AUTH_ERROR,
+  REGISTER_INIT,
+  RESGISTER_SUCCESS,
+  REGISTER_FAIL,
   LOGIN_SUCCES,
   LOGIN_FAIL,
   LOG_OUT,
   LOGIN_INIT,
 } from './type';
 
-//import { setAlert } from './alert';
 import setAuthToken from '../../utils/index';
 
 // Set heades with token
@@ -19,10 +21,8 @@ export const loadUser = () => async (dispatch) => {
 
   try {
     const res = await axios.get('/user/auth/load');
-    console.log('load user', res);
     dispatch({ type: USER_LOADED, payload: res.data });
   } catch (error) {
-    console.log('error', error);
     dispatch({ type: AUTH_ERROR });
   }
 };
@@ -38,16 +38,35 @@ export const login = (userData) => async (dispatch) => {
   dispatch({ type: LOGIN_INIT });
 
   const body = userData;
-  console.log('action', body);
   try {
     const res = await axios.post('/user/auth/login', body, config);
-    console.log('response', res.data);
     dispatch({ type: LOGIN_SUCCES, payload: res.data });
     dispatch(loadUser());
   } catch (error) {
-    console.log(error);
     dispatch({
       type: LOGIN_FAIL,
+    });
+  }
+};
+
+//Login user
+export const register = (userData) => async (dispatch) => {
+  const config = {
+    Headers: {
+      'Content-type': 'application/json',
+    },
+  };
+
+  dispatch({ type: REGISTER_INIT });
+
+  const body = userData;
+  try {
+    const res = await axios.post('/user/create', body, config);
+    dispatch({ type: RESGISTER_SUCCESS, payload: res.data });
+    dispatch(loadUser());
+  } catch (error) {
+    dispatch({
+      type: REGISTER_FAIL,
     });
   }
 };

@@ -2,22 +2,24 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
-import { login } from '../../../redux/actions/auth';
+import { register } from '../../redux/actions/auth';
 
-import './login.css';
-
-const Login = ({ login, auth, isAuthenticated }) => {
-  const [userData, setUserData] = useState({ user_name: '', password: '' });
+const Register = ({ register, auth, isAuthenticated, loading }) => {
+  const [userData, setUserData] = useState({
+    name: '',
+    user_name: '',
+    password: '',
+  });
 
   const handleChange = (e) =>
     setUserData({ ...userData, [e.target.name]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!userData.user_name || !userData.password) {
+    if (!userData.password || !userData.user_name || !userData.name) {
       return;
     }
-    login(userData);
+    register(userData);
   };
 
   if (isAuthenticated) {
@@ -36,6 +38,24 @@ const Login = ({ login, auth, isAuthenticated }) => {
               onSubmit={(e) => handleSubmit(e)}
               noValidate
             >
+              <div className="form-group">
+                <label>
+                  <input
+                    type="text"
+                    id="form_name"
+                    className="my_form-control"
+                    name="name"
+                    value={userData.name}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                  <small className="my_place">Name</small>
+                  <div className="invalid-feedback">
+                    Please enter the above field.
+                  </div>
+                </label>
+              </div>
+
               <div className="form-group">
                 <label>
                   <input
@@ -62,7 +82,7 @@ const Login = ({ login, auth, isAuthenticated }) => {
                     className="my_form-control"
                     value={userData.password}
                     name="password"
-                    onChange={handleChange}
+                    onChange={(e) => handleChange(e)}
                     required
                   />
                   <small className="my_place">Your password</small>
@@ -76,20 +96,21 @@ const Login = ({ login, auth, isAuthenticated }) => {
                 <button
                   type="submit"
                   className="btn btn-primary mt-3 mx-auto"
-                  disabled={auth.loading}
+                  disabled={loading}
                 >
-                  {auth.loading && (
+                  {loading && (
                     <div
                       className="spinner-border text-dark float-right text-light"
                       role="status"
                     ></div>
                   )}
-                  SIGN IN
+                  Register
                 </button>
               </div>
+
               <div className="form-group mt-4 text-center">
-                <Link to="/register" className="forgot">
-                  Register
+                <Link to="/" className="forgot">
+                  Login
                 </Link>
               </div>
             </form>
@@ -103,6 +124,7 @@ const Login = ({ login, auth, isAuthenticated }) => {
 const mapStateToProps = (state) => ({
   auth: state.auth,
   isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loadingRister,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { register })(Register);

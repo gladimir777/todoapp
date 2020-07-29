@@ -28,12 +28,12 @@ export class UserController {
   ) {}
 
   // add a user
+  // @UseGuards(LocalAuthGuard)
   @Post('/create')
   async addUser(@Res() res, @Body() createUserDTO: CreateUserDTO) {
     const user = await this.userService.addUser(createUserDTO);
     return res.status(HttpStatus.OK).json({
-      message: 'User has been created successfully',
-      user,
+      access_token: user.access_token,
     });
   }
 

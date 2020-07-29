@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-const TaskRow = ({ item, index }) => {
-  const [check, setCheck] = useState(false);
+import { updateTask } from '../../redux/actions/task';
 
-  const handleCheck = (e, index) => {
+const TaskRow = ({ item, index, updateTask }) => {
+  const [check, setCheck] = useState(item.state);
+  const [id, setId] = useState('');
+
+  useEffect(() => {
+    if (id || check) {
+      updateTask(id, check);
+    }
+  }, [id, check, updateTask]);
+
+  const handleCheck = (id, index) => {
     setCheck(!check);
-    console.log('check', index);
+    setId(id);
   };
 
   return (
     <>
-      <tr>
+      <tr className={`${item.state ? 'done' : ''}`}>
         <th scope="row">{index + 1}</th>
         <td>{item.name}</td>
         <td>{item.description}</td>
@@ -21,7 +31,8 @@ const TaskRow = ({ item, index }) => {
               className="form-check-input"
               type="checkbox"
               value={check}
-              onChange={(e) => handleCheck(e, index)}
+              checked={check}
+              onChange={(e) => handleCheck(item._id, index)}
               id="defaultCheck1"
             />
           </div>
@@ -31,4 +42,5 @@ const TaskRow = ({ item, index }) => {
   );
 };
 
-export default TaskRow;
+const mapStateToProps = (state) => ({});
+export default connect(mapStateToProps, { updateTask })(TaskRow);

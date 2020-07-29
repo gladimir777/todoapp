@@ -31,10 +31,26 @@ export class TaskController {
     @Body() createTaskDTO: CreateTaskDTO,
     @Request() req,
   ) {
-    console.log('task', req.user);
     const task = await this.taskService.addTask(createTaskDTO, req.user._id);
     return res.status(HttpStatus.OK).json({
       message: 'Task has been created successfully',
+      task,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put('/update/:id/:state')
+  async updateTask(
+    @Res()
+    res,
+    @Param('id') id,
+    @Param('state') state,
+    @Request() req,
+  ) {
+    const newState = JSON.parse(state);
+    const task = await this.taskService.updateTask(id, newState);
+    return res.status(HttpStatus.OK).json({
+      message: 'Task has been updated successfully',
       task,
     });
   }

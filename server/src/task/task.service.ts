@@ -35,16 +35,11 @@ export class TaskService {
     user.save();
     return newTask.save();
   }
-  // Edit task details
-  async updateTask(
-    taskID: string,
-    createTaskDTO: CreateTaskDTO,
-  ): Promise<ITask> {
-    const updatedTask = await this.taskModel.findByIdAndUpdate(
-      taskID,
-      createTaskDTO,
-      { new: true },
-    );
+  // Set state to true,or false
+  async updateTask(taskID: string, state: Boolean): Promise<ITask> {
+    const updatedTask = await this.taskModel.findById(taskID);
+    updatedTask.state = state;
+    updatedTask.save();
     return updatedTask;
   }
   // Delete a task

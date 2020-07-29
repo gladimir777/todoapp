@@ -4,3 +4,8 @@
   display: flex;
   color: white;
 }
+
+.done {
+  background-color: red;
+  color: #eee;
+}
