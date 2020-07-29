@@ -4,11 +4,12 @@ import {
   LOGIN_SUCCES,
   LOGIN_FAIL,
   LOG_OUT,
+  LOGIN_INIT,
 } from '../actions/type';
 
 const initialState = {
   token: localStorage.getItem('authToken'),
-  loading: true,
+  loading: false,
   user: null,
   isAuthenticated: null,
 };
@@ -21,12 +22,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
-        ...payload,
+        user: payload,
         isAuthenticated: true,
       };
 
+    case LOGIN_INIT:
+      return {
+        ...state,
+        loading: true,
+      };
+
     case LOGIN_SUCCES:
-      localStorage.setItem('authToken', payload.token);
+      localStorage.setItem('authToken', payload.access_token);
       return {
         ...state,
         ...payload,

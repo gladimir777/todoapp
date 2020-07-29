@@ -26,7 +26,6 @@ export class UserService {
 
   // Login
   async getUser(userDTO: any): Promise<IUser> {
-    console.log('user dto', userDTO);
     const user = await this.userModel
       .findOne({ user_name: userDTO.user_name, password: userDTO.password })
       .select('-password')

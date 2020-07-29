@@ -82,3 +82,9 @@ input:not(:focus):valid ~ .my_place {
   color: #0073ff;
   cursor: pointer;
 }
+
+.spiner {
+  position: absolute;
+  left: 40px;
+  top: 20px;
+}

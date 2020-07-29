@@ -27,7 +27,6 @@ export class TaskController {
     @Body() createTaskDTO: CreateTaskDTO,
     @Param('userID') userID: string,
   ) {
-    console.log('Datos', createTaskDTO);
     const task = await this.taskService.addTask(createTaskDTO, userID);
     return res.status(HttpStatus.OK).json({
       message: 'Task has been created successfully',
@@ -45,7 +44,6 @@ export class TaskController {
   // Fetch a particular user using ID
   @Get('/:taskID')
   async getUser(@Res() res, @Param('taskID') taskID) {
-    console.log('ID', taskID);
     const user = await this.taskService.getTask(taskID);
     if (!user) throw new NotFoundException('Task does not exist!');
     return res.status(HttpStatus.OK).json(user);

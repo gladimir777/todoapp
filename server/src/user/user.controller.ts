@@ -13,19 +13,23 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 
 import { CreateUserDTO } from '../dto/user.dto';
 import { UserService } from '../user/user.service';
+import { AuthService } from '../auth/auth.service';
+import { LocalAuthGuard } from '../auth/local-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+  ) {}
 
   // add a user
   @Post('/create')
   async addUser(@Res() res, @Body() createUserDTO: CreateUserDTO) {
-    console.log('Datos', createUserDTO);
     const user = await this.userService.addUser(createUserDTO);
     return res.status(HttpStatus.OK).json({
       message: 'User has been created successfully',
@@ -43,20 +47,24 @@ export class UserController {
   // Fetch a particular user using ID
   @Get('/:userID')
   async getUserById(@Res() res, @Param('userID') userID) {
-    console.log('ID', userID);
     const user = await this.userService.getUser(userID);
     if (!user) throw new NotFoundException('User does not exist!');
     return res.status(HttpStatus.OK).json(user);
   }
 
-  @UseGuards(AuthGuard('local'))
+  // Fetch a particular user using the user token
+  @UseGuards(JwtAuthGuard)
+  @Get('/auth/load')
+  async loadUser(@Request() req, @Res() res) {
+    const userID = req.user._id;
+    const user = await this.userService.getUserById(userID);
+    return res.status(HttpStatus.OK).json(user);
+  }
+
+  @UseGuards(LocalAuthGuard)
   @Post('/auth/login')
   async Login(@Request() req) {
-    console.log('req', req);
-    return req.user;
-    //  const user = await this.userService.getUser(createUserDTO);
-    // if (!user) throw new NotFoundException('User does not exist!');
-    //return res.status(HttpStatus.OK).json(user);
+    return this.authService.login(req.user);
   }
 
   // Fetch a particular user using ID

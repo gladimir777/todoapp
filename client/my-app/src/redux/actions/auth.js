@@ -5,6 +5,7 @@ import {
   LOGIN_SUCCES,
   LOGIN_FAIL,
   LOG_OUT,
+  LOGIN_INIT,
 } from './type';
 
 //import { setAlert } from './alert';
@@ -12,14 +13,16 @@ import setAuthToken from '../../utils/index';
 
 // Set heades with token
 export const loadUser = () => async (dispatch) => {
-  if (localStorage.token) {
-    setAuthToken(localStorage.token);
+  if (localStorage.authToken) {
+    setAuthToken(localStorage.authToken);
   }
 
   try {
-    const res = await axios.get('/api/auth');
+    const res = await axios.get('/user/auth/load');
+    console.log('load user', res);
     dispatch({ type: USER_LOADED, payload: res.data });
   } catch (error) {
+    console.log('error', error);
     dispatch({ type: AUTH_ERROR });
   }
 };
@@ -32,13 +35,15 @@ export const login = (userData) => async (dispatch) => {
     },
   };
 
+  dispatch({ type: LOGIN_INIT });
+
   const body = userData;
   console.log('action', body);
   try {
     const res = await axios.post('/user/auth/login', body, config);
     console.log('response', res.data);
     dispatch({ type: LOGIN_SUCCES, payload: res.data });
-    // dispatch(loadUser());
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
     if (errors) {

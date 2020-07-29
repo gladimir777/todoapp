@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-
+import { Redirect } from 'react-router-dom';
 import { login } from '../../../redux/actions/auth';
 
 import './login.css';
 
-const Login = ({ login }) => {
+const Login = ({ login, auth, isAuthenticated }) => {
   const [userData, setUserData] = useState({ user_name: '', password: '' });
 
   const handleChange = (e) =>
@@ -16,6 +16,9 @@ const Login = ({ login }) => {
     login(userData);
   };
 
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <div className="container myCtn">
       <div className="card">
@@ -67,6 +70,12 @@ const Login = ({ login }) => {
 
               <div className="form-group text-center">
                 <button type="submit" className="btn btn-primary mt-3 mx-auto">
+                  {auth.loading && (
+                    <div
+                      className="spinner-border text-dark float-right text-light"
+                      role="status"
+                    ></div>
+                  )}
                   SIGN IN
                 </button>
               </div>
@@ -80,6 +89,7 @@ const Login = ({ login }) => {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, { login })(Login);
