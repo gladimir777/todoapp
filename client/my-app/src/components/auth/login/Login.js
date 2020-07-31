@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import { login } from '../../../redux/actions/auth';
+import FormInputs from '../FormInputs';
 
 import './login.css';
 
@@ -36,23 +37,15 @@ const Login = ({ login, auth, isAuthenticated }) => {
               onSubmit={(e) => handleSubmit(e)}
               noValidate
             >
-              <div className="form-group">
-                <label>
-                  <input
-                    type="text"
-                    id="form_user"
-                    className="my_form-control"
-                    name="user_name"
-                    value={userData.userName}
-                    onChange={(e) => handleChange(e)}
-                    required
-                  />
-                  <small className="my_place">Username</small>
-                  <div className="invalid-feedback">
-                    Please enter the above field.
-                  </div>
-                </label>
-              </div>
+              <FormInputs
+                type="text"
+                id="form_user"
+                name="user_name"
+                value={userData.userName}
+                label="UserName"
+                handleChange={(e) => handleChange(e)}
+                required={true}
+              />
 
               <div className="form-group">
                 <label>
