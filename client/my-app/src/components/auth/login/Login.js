@@ -6,6 +6,7 @@ import { login } from '../../../redux/actions/auth';
 import FormInputs from '../FormInputs';
 
 import './login.css';
+import Button from '../Button';
 
 const Login = ({ login, auth, isAuthenticated }) => {
   const [userData, setUserData] = useState({ user_name: '', password: '' });
@@ -42,44 +43,27 @@ const Login = ({ login, auth, isAuthenticated }) => {
                 id="form_user"
                 name="user_name"
                 value={userData.userName}
-                label="UserName"
-                handleChange={(e) => handleChange(e)}
+                label="User name"
+                handleChange={handleChange}
                 required={true}
               />
 
-              <div className="form-group">
-                <label>
-                  <input
-                    type="password"
-                    id="form_password"
-                    className="my_form-control"
-                    value={userData.password}
-                    name="password"
-                    onChange={handleChange}
-                    required
-                  />
-                  <small className="my_place">Your password</small>
-                  <div className="invalid-feedback">
-                    Please enter the above field.
-                  </div>
-                </label>
-              </div>
+              <FormInputs
+                type="password"
+                id="form_password"
+                name="password"
+                value={userData.password}
+                label="Your password"
+                handleChange={handleChange}
+                required={true}
+              />
 
-              <div className="form-group text-center">
-                <button
-                  type="submit"
-                  className="btn btn-primary mt-3 mx-auto"
-                  disabled={auth.loading}
-                >
-                  {auth.loading && (
-                    <div
-                      className="spinner-border text-dark float-right text-light"
-                      role="status"
-                    ></div>
-                  )}
-                  SIGN IN
-                </button>
-              </div>
+              <Button
+                disabled={auth.loading}
+                loading={auth.loading}
+                label="SIGN IN"
+                type="submit"
+              />
               <div className="form-group mt-4 text-center">
                 <Link to="/register" className="forgot">
                   Register
